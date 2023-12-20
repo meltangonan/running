@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Off-Season Running Plan</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #e9ecef;
+    }
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1em; /* Adjusting font size for a more modern look */
+    }
+    th, td {
+        border: 1px solid #dee2e6;
+        text-align: center;
+        padding: 12px; /* Increased padding for a more spacious look */
+        border-collapse: collapse; /* Ensuring borders do not overlap */
+    }
+    th {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+    td {
+        background-color: #ffffff;
+        color: #212529;
+    }
+    .total-mileage {
+        font-weight: bold;
+        background-color: #ced4da;
+    }
+    input[type='number'] {
+        width: 80%; /* Made inputs take the width of 80% of the cell */
+        padding: 10px; /* Increased padding for bigger appearance */
+        border: 1px solid #dee2e6;
+        text-align: center;
+        border-radius: 4px; /* Rounded borders for input fields */
+        font-size: 1em;
+    }
+    input[type='number']:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Off-Season Running Plan</h2>
+    <table id="running-plan">
+        <tr>
+            <th>Week</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+            <th>Total Mileage</th>
+        </tr>
+        <!-- Weeks will be added here -->
+    </table>
+</div>
+
+<script>
+function calculateTotalMileage() {
+    var table = document.getElementById("running-plan");
+    for (var i = 1, row; row = table.rows[i]; i++) {
+        var sum = 0;
+        for (var j = 1, col; col = row.cells[j]; j++) {
+            if (j < 8) { // Including Sunday as well for the input
+                var input = col.getElementsByTagName('input')[0];
+                if (input) {
+                    sum += parseInt(input.value) || 0;
+                }
+            }
+        }
+        row.cells[8].innerHTML = sum; // Setting the total mileage in the correct cell
+    }
+}
+
+// Dynamically add weeks to the table
+function addWeeks() {
+    var table = document.getElementById("running-plan");
+    for (var i = 1; i <= 4; i++) {
+        var row = table.insertRow(-1);
+        for (var j = 0; j < 9; j++) { // Correcting to 9 cells per row
+            var cell = row.insertCell(-1);
+            if (j === 0) {
+                cell.innerHTML = 'Week ' + i;
+            } else if (j === 8) { // Separating the total mileage cell
+                cell.classList.add('total-mileage');
+                cell.innerHTML = '0';
+            } else {
+                cell.innerHTML = '<input type="number" min="0" oninput="calculateTotalMileage()">';
+            }
+        }
+    }
+}
+
+window.onload = addWeeks;
+</script>
+</body>
+</html>
